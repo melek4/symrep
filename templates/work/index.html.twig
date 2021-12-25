@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Work By Category
+{% endblock %}
+
+{% block body %}
+<h1>Work By Category</h1>
+
+{% for category in categories %}
+	<H4>{{category.label}}</h4>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Title</th>
+				<th>Description</th>
+				<th>File</th>
+				<th>actions</th>
+
+
+			</tr>
+		</thead>
+		<tbody>
+			{% for work in works %}
+				{% if work.category == category.label %}
+					<tr>
+						<td>{{ work.title }}</td>
+						<td>{{ work.description }}</td>
+						<td><img src="{{asset('uploads/')~work.filename}}" width="180" height="120"></td>
+						<td>
+							<a href="{{ path('work_show', {'id': work.id}) }}" class="btn btn-secondary">show</a>
+							{% if is_granted('ROLE_EDITOR') %}
+								<a href="{{ path('work_edit', {'id': work.id}) }}" class="btn btn-secondary">edit</a>
+							{% endif %}
+							<a href="{{path('work_like2',{'id':work.id})}}" class="btn btn-secondary js-like">
+								{% if app.user and work.isLikedByUser(app.user) %}
+									<i class="fas fa-thumbs-up"></i>
+								{% else %}
+									<i class="far fa-thumbs-up"></i>
+								{% endif %}
+								<span class="js-likes">{{work.likes|length}}</span>
+								<span clas="js-label">likes</span>
+							</a>
+						</td>
+
+					</tr>
+				{% endif %}
+			{% else %}
+				<tr>
+					<td colspan="5">no records found</td>
+				</tr>
+
+			{% endfor %}
+		</tbody>
+	</tbody>
+</table>{% endfor %}{% if is_granted('ROLE_EDITOR') %}
+<a href="{{ path('work_new') }}" class="btn btn-dark">Create new</a>{% endif %}{% endblock %}

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>
+			{% block title %}Welcome!
+			{% endblock %}
+		</title>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+		<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+		<script src="https://kit.fontawesome.com/2d8d41096c.js" crossorigin="anonymous"></script>
+		{% block stylesheets %}
+			{{ encore_entry_link_tags('app') }}
+		{% endblock %}
+
+		{% block javascripts %}
+			{{ encore_entry_script_tags('app') }}
+		{% endblock %}
+	</head>
+	<body>
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+			<a class="navbar-brand" href="#">Navbar</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item">
+						<a class="nav-link" href="{{path('work_index')}}">Works</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{{path('work_bycateg_index')}}">Works By Category</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{{path('searchbar')}}">Search By Title</a>
+					</li>
+					{% if is_granted('ROLE_EDITOR') %}
+						<li class="nav-item">
+							<a class="nav-link" href="{{path('work_new')}}">Add your work</a>
+						</li>
+					{% endif %}
+
+					{% if is_granted('ROLE_ADMIN') %}
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								Manage
+							</a>
+							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<a class="dropdown-item" href="{{path('userlist')}}">Users</a>
+
+
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="{{path('category_index')}}">Categories</a>
+
+							</div>
+						</li>
+					{% endif %}
+					{% if app.user %}
+						<li class="nav-item">
+							<a class="nav-link" href="{{path('app_logout')}}">Logout</a>
+						</li>
+					{% endif %}
+					{% if not app.user %}
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								Connect
+							</a>
+							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<a class="dropdown-item" href="{{path('app_login')}}">Login</a>
+
+
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="{{path('app_register')}}">Not a member? sign up</a>
+
+							</div>
+						</li>
+
+					{% endif %}
+
+				</ul>
+			</div>
+
+		</nav>
+
+		{% block body %}{% endblock %}
+	</body>
+</html>
